@@ -1,0 +1,23 @@
+##!/bin/sh
+
+# 入力したメッセージを取得
+input=$(cat $1)
+#echo ${input}
+
+# ブランチ名を取得
+branch=$(git branch | grep "*" | awk '{print $2}')
+#echo "Branch Name is ${branch}" 
+
+if [ "${branch}" = "master" ] ; then
+    echo masterブランチにはコミットできません
+    exit 1
+fi
+
+# Issue番号までを取得
+issueNo=$(echo ${branch} | awk -F '_' '{print $1}')
+#echo ${issueNo}
+
+# コミットファイルを更新
+echo "${issueNo} ${input}" > $1
+
+exit 0
